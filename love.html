@@ -1,0 +1,1186 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给最可爱的小猪大王</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            min-height: 100vh;
+            overflow-y: auto; /* 修复滚动问题 */
+        }
+        body {
+            background: linear-gradient(145deg, #fce4ec, #f3e5f5, #e8eaf6);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* 改为顶部对齐，允许滚动 */
+            font-family: 'Georgia', sans-serif;
+            padding: 20px 16px;
+            position: relative;
+            overflow-x: hidden;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        /* ----- 星星闪烁（淡粉色） ----- */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #f8bbd0;
+            border-radius: 50%;
+            box-shadow: 60px 120px 0 2px rgba(248, 187, 208, 0.6),
+                        200px 50px 0 1px rgba(248, 187, 208, 0.4),
+                        300px 300px 0 3px rgba(248, 187, 208, 0.7),
+                        100px 400px 0 2px rgba(248, 187, 208, 0.3);
+            animation: twinkle 3s infinite alternate;
+        }
+        body::after {
+            left: 20%;
+            top: 30%;
+            box-shadow: 150px 200px 0 2px rgba(248, 187, 208, 0.5),
+                        80px 350px 0 1px rgba(248, 187, 208, 0.6),
+                        280px 100px 0 3px rgba(248, 187, 208, 0.4);
+            animation-duration: 4s;
+            animation-delay: 1s;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        /* ----- 卡片样式（粉色玻璃） ----- */
+        .card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 48px;
+            padding: 32px 24px 28px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(233, 30, 99, 0.15);
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.6);
+            position: relative;
+            z-index: 2;
+            margin: 10px auto;
+            touch-action: manipulation;
+        }
+        h1 { 
+            color: #ad1457; 
+            font-size: 24px; 
+            margin-bottom: 4px; 
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(233, 30, 99, 0.15);
+        }
+        .sub { 
+            color: #7a4a6b; 
+            opacity: 0.8; 
+            font-size: 14px; 
+            margin-bottom: 12px; 
+        }
+
+        /* ----- 天气（粉色搭配） ----- */
+        .weather-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(233, 30, 99, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            color: #6a3b5a;
+            min-height: 44px;
+        }
+        .weather-box .temp { font-weight: bold; color: #d81b60; }
+        .weather-box .city { color: #7a4a6b; }
+        .weather-box .weather-msg { color: #8e24aa; font-style: italic; font-size: 14px; }
+
+        .days-box {
+            background: linear-gradient(135deg, #f06292, #ec407a);
+            color: white;
+            border-radius: 100px;
+            padding: 16px 0;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(233, 30, 99, 0.25);
+        }
+        .days-num { font-size: 48px; font-weight: bold; line-height: 1; }
+        .days-label { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+
+        .meet-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 40px;
+            padding: 10px 0;
+            margin-bottom: 16px;
+            border: 1px solid rgba(233, 30, 99, 0.15);
+        }
+        .meet-num { font-size: 28px; font-weight: bold; color: #d81b60; }
+        .meet-label { font-size: 13px; color: #7a4a6b; }
+
+        /* ----- 恋爱状态 ----- */
+        .status-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(233, 30, 99, 0.15);
+            font-size: 16px;
+            color: #4a2a3a;
+            line-height: 1.6;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .status-box .highlight { color: #d81b60; font-weight: bold; }
+
+        .msg-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            border: 1px dashed #f06292;
+            transition: all 0.3s;
+        }
+        #loveMsg { font-size: 18px; color: #4a2a3a; line-height: 1.6; }
+
+        /* ----- 每日小任务 ----- */
+        .task-box {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(156, 39, 176, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .task-text {
+            color: #4a2a3a;
+            font-size: 15px;
+            flex: 1;
+            text-align: left;
+        }
+        .task-text .task-emoji { margin-right: 6px; }
+        .task-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(233, 30, 99, 0.2);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: #ad1457;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .task-btn:active { transform: scale(0.94); }
+        .task-btn.done {
+            background: #f06292;
+            border-color: #ec407a;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .btn-group { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            flex: 1;
+            min-width: 70px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(233, 30, 99, 0.2);
+            padding: 12px 0;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #ad1457;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size：15px;
+            backdrop-filter: blur(4px);
+        }
+        .btn:active { transform: scale(0.94); background: rgba(233, 30, 99, 0.1); }
+        .btn-primary { background: #ec407a; color: white; border-color: #d81b60; box-shadow: 0 4px 20px rgba(233, 30, 99, 0.25); }
+        .btn-primary:active { background: #c2185b; }
+        .btn-pink { background: #ab47bc; color: white; border-color: #8e24aa; box-shadow: 0 4px 20px rgba(156, 39, 176, 0.25); }
+        .btn-pink:active { background: #7b1fa2; }
+        .btn-purple { background: #7e57c2; color: white; border-color: #5c6bc0; box-shadow: 0 4px 20px rgba(94, 53, 177, 0.25); }
+        .btn-purple:active { background: #512da8; }
+
+        /* ----- 计数器 ----- */
+        .counter-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .counter-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(233, 30, 99, 0.15);
+            padding: 14px 0;
+            border-radius: 30px;
+            font-size: 18px;
+            color: #4a2a3a;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            text-align: center;
+        }
+        .counter-btn:active { transform: scale(0.94); }
+        .counter-btn .count {
+            display: block;
+            font-size: 28px;
+            font-weight: bold;
+            color: #d81b60;
+            margin-top: 2px;
+        }
+        .counter-btn .label { font-size: 13px; color: #7a4a6b; }
+
+        .checkin-area {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .checkin-btn {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(233, 30, 99, 0.15);
+            padding: 12px 0;
+            border-radius: 30px;
+            font-size: 15px;
+            color: #4a2a3a;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .checkin-btn:active { transform: scale(0.94); }
+        .checkin-btn.done {
+            background: #f06292;
+            border-color: #ec407a;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .music-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(233, 30, 99, 0.2);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 22px;
+            color: #ad1457;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .music-btn:active { transform: scale(0.9); }
+        .music-btn.playing { border-color: #ec407a; box-shadow: 0 0 30px rgba(233, 30, 99, 0.3); }
+
+        .footer { margin-top: 16px; font-size: 14px; color: #7a4a6b; letter-spacing: 1px; }
+        .footer span { color: #d81b60; }
+        .hint { margin-top: 6px; font-size: 12px; color: #b39ddb; }
+  /* ===== 可爱小猪（粉色版） ===== */
+        .pig-run {
+            position: fixed;
+            bottom: 30px;
+            left: -100px;
+            z-index: 10;
+            pointer-events: none;
+            animation: pigMove 10s ease-in-out infinite;
+        }
+        .pig-body {
+            position: relative;
+            width: 70px;
+            height: 50px;
+            background: #f8bbd0;
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 4px 15px rgba(248, 187, 208, 0.4);
+        }
+        .pig-body::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            width: 20px;
+            height: 14px;
+            background: #f48fb1;
+            border-radius: 50%;
+            box-shadow: inset 0 -2px 0 #e07a8c;
+        }
+        .pig-body::after {
+            content: '';
+            position: absolute;
+            top: 22px;
+            left: 22px;
+            width: 5px;
+            height: 5px;
+            background: #d4728a;
+            border-radius: 50%;
+            box-shadow: 10px 0 0 #d4728a;
+        }
+        .pig-ear {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #f8bbd0;
+            border-radius: 50% 50% 0 50%;
+            top: -8px;
+        }
+        .pig-ear.left { left: 6px; transform: rotate(-20deg); }
+        .pig-ear.right { right: 6px; transform: rotate(20deg) scaleX(-1); }
+        .pig-eye {
+            position: absolute;
+            width: 8px;
+            height: 10px;
+            background: #4a2a3a;
+            border-radius: 50%;
+            top: 12px;
+            box-shadow: 0 0 6px rgba(255,255,255,0.2);
+        }
+        .pig-eye.left { left: 12px; }
+        .pig-eye.right { right: 12px; }
+        .pig-eye::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 3px;
+        }
+        .pig-blush {
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background: rgba(233, 30, 99, 0.2);
+            border-radius: 50%;
+            top: 28px;
+        }
+        .pig-blush.left { left: 2px; }
+        .pig-blush.right { right: 2px; }
+        .pig-leg {
+            position: absolute;
+            width: 10px;
+            height: 14px;
+            background: #f8bbd0;
+            border-radius: 0 0 6px 6px;
+            bottom: -12px;
+        }
+        .pig-leg:nth-child(1) { left: 10px; }
+        .pig-leg:nth-child(2) { left: 28px; }
+        .pig-leg:nth-child(3) { right: 28px; }
+        .pig-leg:nth-child(4) { right: 10px; }
+        .pig-tail {
+            position: absolute;
+            right: -12px;
+            top: 18px;
+            width: 12px;
+            height: 12px;
+            border: 3px solid #f8bbd0;
+            border-radius: 50%;
+            border-left-color: transparent;
+            transform: rotate(30deg);
+        }
+@keyframes pigMove {
+            0%   { left: -100px; transform: scaleX(1) translateY(0); }
+            10%  { transform: scaleX(1) translateY(-8px); }
+            20%  { transform: scaleX(1) translateY(0); }
+            45%  { transform: scaleX(1); }
+            50%  { transform: scaleX(-1); }
+            55%  { transform: scaleX(-1) translateY(-8px); }
+            65%  { transform: scaleX(-1) translateY(0); }
+            100% { left: calc(100% + 30px); transform: scaleX(-1); }
+        }
+
+        @media (max-width: 400px) {
+            .pig-run { bottom: 15px; }
+            .pig-body { width: 56px; height: 40px; }
+            .pig-body::before { top: 14px; left: 14px; width: 16px; height: 11px; }
+            .pig-body::after { top: 18px; left: 17px; width: 4px; height: 4px; box-shadow: 8px 0 0 #d4728a; }
+            .pig-ear { width: 14px; height: 14px; top: -6px; }
+            .pig-eye { width: 6px; height: 8px; top: 10px; }
+            .pig-eye.left { left: 10px; }
+            .pig-eye.right { right: 10px; }
+            .pig-eye::after { width: 2px; height: 2px; top: 2px; left: 2px; }
+            .pig-blush { width: 10px; height: 6px; top: 22px; }
+            .pig-leg { width: 8px; height: 11px; bottom: -10px; }
+            .pig-leg:nth-child(1) { left: 8px; }
+            .pig-leg:nth-child(2) { left: 22px; }
+            .pig-leg:nth-child(3) { right: 22px; }
+            .pig-leg:nth-child(4) { right: 8px; }
+            .pig-tail { right: -10px; top: 14px; width: 10px; height: 10px; border-width: 2px; }
+            .counter-btn .count { font-size: 22px; }
+            .btn { font-size: 13px; padding: 10px 0; }
+        }
+
+        /* ===== 爱心泡泡 ===== */
+        .bubble {
+            position: fixed;
+            pointer-events: none;
+            font-size: 24px;
+            z-index: 20;
+            animation: bubbleUp 2s ease-out forwards;
+        }
+        @keyframes bubbleUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-200px) scale(1.5); }
+        }
+
+        /* ===== 爱心雨 ===== */
+        .rain-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            z-index: 15;
+            animation: rainDown 3s ease-in forwards;
+        }
+        @keyframes rainDown {
+            0% { opacity: 1; transform: translateY(-50px) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(calc(100vh + 50px)) rotate(720deg); }
+        }
+
+        /* ===== 今日运势弹窗（粉色） ===== */
+        .fortune-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 32px 28px;
+            max-width: 320px;
+            width: 90%;
+            z-index: 30;
+            text-align: center;
+            border: 2px solid rgba(233, 30, 99, 0.2);
+            box-shadow: 0 30px 80px rgba(233, 30, 99, 0.2);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .fortune-popup.show { transform: translate(-50%, -50%) scale(1); }
+        .fortune-popup .emoji { font-size: 48px; margin-bottom: 12px; }
+        .fortune-popup .text { color: #4a2a3a; font-size: 20px; line-height: 1.6; }
+        .fortune-popup .close-btn {
+            margin-top: 20px;
+            background: #f06292;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .fortune-popup .close-btn:active { transform: scale(0.94); }
+        .fortune-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.2);
+            z-index: 29;
+            display: none;
+        }
+        .fortune-overlay.show { display: block; }
+    </style>
+</head>
+<body>
+  <!-- ===== 小猪 ===== -->
+    <div class="pig-run">
+        <div class="pig-body">
+            <div class="pig-ear left"></div>
+            <div class="pig-ear right"></div>
+            <div class="pig-eye left"></div>
+            <div class="pig-eye right"></div>
+            <div class="pig-blush left"></div>
+            <div class="pig-blush right"></div>
+            <div class="pig-leg"></div>
+            <div class="pig-leg"></div>
+            <div class="pig-leg"></div>
+            <div class="pig-leg"></div>
+            <div class="pig-tail"></div>
+        </div>
+    </div>
+
+    <!-- ===== 主卡片 ===== -->
+    <div class="card" id="mainCard">
+        <h1>💫 给最可爱的小猪大王</h1>
+        <div class="sub">—— 来自你永远的忠实小狗</div>
+
+        <!-- 音乐播放 -->
+        <button class="music-btn" id="musicToggle">🎵</button>
+
+        <!-- 🌤️ 天气（城市已改为梧州） -->
+        <div class="weather-box" id="weatherBox">
+            <span>🌍 获取天气中...</span>
+        </div>
+
+        <!-- 纪念日 -->
+        <div class="days-box">
+            <div class="days-num" id="daysDisplay">0</div>
+            <div class="days-label">我们已经在一起的第 N 天</div>
+        </div>
+
+        <!-- 见面倒计时 -->
+        <div class="meet-box">
+            <div class="meet-num" id="meetDays">0</div>
+            <div class="meet-label">距离下次见面还有</div>
+        </div>
+
+        <!-- 📊 今日恋爱状态 -->
+        <div class="status-box" id="statusBox">
+            💕 今天也要甜甜的哦～
+        </div>
+
+        <!-- 情话 -->
+        <div class="msg-box" id="msgBox">
+            <div id="loveMsg">点击下方按钮，收获今日份心动 💓</div>
+        </div>
+
+        <!-- 按钮组 -->
+        <div class="btn-group">
+            <button class="btn" onclick="getNewMsg()">🍬 换一句</button>
+            <button class="btn btn-primary" id="missYouBtn">💕 我想你</button>
+            <button class="btn btn-purple" onclick="showFortune()">🔮 今日运势</button>
+        </div>
+
+        <!-- 🫂 抱抱 + 💕 想你 计数器 -->
+        <div class="counter-area">
+            <button class="counter-btn" id="hugBtn" onclick="addCount('hug')">
+                <span class="label">🫂 抱抱</span>
+                <span class="count" id="hugCount">0</span>
+            </button>
+            <button class="counter-btn" id="missCountBtn" onclick="addCount('miss')">
+                <span class="label">💕 想你</span>
+                <span class="count" id="missCount">0</span>
+            </button>
+        </div>
+
+        <!-- 🎯 每日小任务 -->
+        <div class="task-box" id="taskBox">
+            <span class="task-text" id="taskText">🎯 今天的任务：...</span>
+            <button class="task-btn" id="taskBtn" onclick="completeTask()">完成 ✅</button>
+        </div>
+
+        <!-- 打卡 -->
+        <div class="checkin-area">
+            <button class="checkin-btn" id="waterBtn" onclick="checkin('water')">💧 今天喝水了</button>
+            <button class="checkin-btn" id="missBtn" onclick="checkin('miss')">❤️ 今天想我了</button>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="footer">✨ <span>永远是你的忠实小狗</span> ✨</div>
+        <div class="hint">🫧 长按卡片冒泡泡 ｜ 摇一摇下爱心雨</div>
+    </div>
+
+    <!-- ===== 今日运势弹窗 ===== -->
+    <div class="fortune-overlay" id="fortuneOverlay" onclick="closeFortune()"></div>
+    <div class="fortune-popup" id="fortunePopup">
+        <div class="emoji" id="fortuneEmoji">🌸</div>
+        <div class="text" id="fortuneText">今天运气超好！</div>
+        <button class="close-btn" onclick="closeFortune()">知道了 ~</button>
+    </div>
+
+    <!-- ===== Canvas 特效 ===== -->
+    <canvas id="effectCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></canvas>
+
+    <script>
+        // =======================================================    // 配置区（你可以随意修改）
+        // ============================================================
+        const START_DATE = new Date('2025-09-24');        // 在一起纪念日
+        const MEET_DATE = new Date('2026-08-31');         // 下次见面日期
+        const SONG_ID = '420401511';                      // 音乐ID
+        const SONG_URL = `https://music.163.com/song/media/outer/url?id=${SONG_ID}.mp3`;
+
+        // 城市（已改为梧州）
+        const CITY = '梧州';
+
+        // 情话库
+        const messages = [
+            "今天的星星很亮，但还是不如你的眼睛明亮。",
+            "我每天都在算着日子，离和你见面还有多少天。",
+            "你永远是我的小公主，我永远是你的守护星。",
+            "不知道小猪大王今天有没有偷偷想我呀？",
+            "你一定要好好吃饭，不然我会心疼好久的。",
+            "晚安呀我的宝宝，梦里我一定会找到你。",
+            "每次想你的时候，我都会抬头看看月亮。",
+            "你是我专属定制、独一份的快乐。",
+            "能遇到你，是我这辈子最幸运的事情。",
+            "不管发生什么，我永远都站在你这边。",
+            "我会把所有的温柔和偏爱，都只给你一个人。",
+            "小猪大王，今天有没有比昨天多笑一点呀？"
+        ];
+
+        // 每日小任务库
+        const tasks = [
+            "拍一张天空的照片发给我 ☁️",
+            "对自己说一句“我很棒” 💪",
+            "今天要喝够8杯水 💧",
+            "夸一夸自己呀🌟",
+            "对着镜子笑一下 😊",
+            "给小狗发一句“我想你” 💕",
+            "今天要吃一个水果 🍎",
+            "写下今天最开心的一件事 📝",
+            "深呼吸三次，放松一下 🧘",
+            "给手机相册里的某张照片起个名字 🖼️",
+            "今天要早睡哦 🌙",
+            "听一首喜欢的歌 🎵"
+        ];
+
+        // 今日运势签文
+        const fortunes = [
+            { emoji: '🌸', text: '今天你会被可爱的人想念哦～' },
+            { emoji: '🍀', text: '好运正在路上，马上就到！' },
+            { emoji: '✨', text: '今天适合吃甜食，心情会变好！' },
+            { emoji: '🌙', text: '今晚的月亮会替你传达思念。' },
+            { emoji: '💫', text: '你比昨天更耀眼了！' },
+            { emoji: '🌈', text: '雨过天晴，一切都会变好的。' },
+            { emoji: '🌟', text: '今天会有小惊喜等着你～' },
+            { emoji: '🍬', text: '适合对喜欢的人说一句甜甜的话。' },
+            { emoji: '🐶', text: '今天小狗超级想你！' },
+            { emoji: '🌺', text: '你笑起来的样子，比花还好看。' },
+            { emoji: '💕', text: '今天适合拥抱，记得要抱抱哦。' },
+            { emoji: '🎵', text: '今天会有好听的歌入耳～' }
+        ];
+        // ============================================================
+   // ----- 工具函数：获取今天的日期字符串 -----
+        function getTodayStr() {
+            return new Date().toLocaleDateString('zh-CN');
+        }
+
+        // ----- 1. 更新天数 -----
+        function updateDays() {
+            const today = new Date();
+            const diffTime = today - START_DATE;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysDisplay').textContent = diffDays;
+
+            const meetTime = MEET_DATE - today;
+            const meetDays = Math.ceil(meetTime / (1000 * 60 * 60 * 24));
+            document.getElementById('meetDays').textContent = meetDays > 0 ? meetDays : '0 (就是今天！)';
+        }
+
+        // ----- 2. 情话 -----
+        function getNewMsg() {
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            document.getElementById('loveMsg').textContent = messages[randomIndex];
+        }
+
+        // ----- 3. 今日运势 -----
+        function showFortune() {
+            const todayStr = getTodayStr();
+            const stored = localStorage.getItem('fortune_today');
+            let fortune;
+            if (stored && stored.startsWith(todayStr)) {
+                const saved = JSON.parse(stored.substring(10));
+                fortune = saved;
+            } else {
+                const idx = Math.floor(Math.random() * fortunes.length);
+                fortune = fortunes[idx];
+                localStorage.setItem('fortune_today', todayStr + JSON.stringify(fortune));
+            }
+            document.getElementById('fortuneEmoji').textContent = fortune.emoji;
+            document.getElementById('fortuneText').textContent = fortune.text;
+            document.getElementById('fortuneOverlay').classList.add('show');
+            document.getElementById('fortunePopup').classList.add('show');
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth * 0.6 + window.innerWidth * 0.2,
+                        Math.random() * window.innerHeight * 0.4 + window.innerHeight * 0.2
+                    );
+                }, i * 200);
+            }
+        }
+        function closeFortune() {
+            document.getElementById('fortuneOverlay').classList.remove('show');
+            document.getElementById('fortunePopup').classList.remove('show');
+        }
+
+        // ----- 4. 我想你按钮 -----
+        document.getElementById('missYouBtn').addEventListener('click', function(e) {
+            const msgBox = document.getElementById('loveMsg');
+            msgBox.textContent = '我也很想你 💕';
+            const rect = this.getBoundingClientRect();
+            createFirework(rect.left + rect.width/2, rect.top + rect.height/2);
+            for (let i = 0; i < 4; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1,
+                        Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.1
+                    );
+                }, i * 200);
+            }
+            setTimeout(() => { getNewMsg(); }, 2500);
+        });
+
+        // ----- 5. 长按冒泡泡 -----
+        let holdTimer = null;
+        const card = document.getElementById('mainCard');
+        card.addEventListener('touchstart', function(e) {
+            holdTimer = setTimeout(() => {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createBubble(e.touches ? e.touches[0].clientX : e.clientX, e.touches ? e.touches[0].clientY : e.clientY);
+                    }, i * 150);
+                }
+            }, 500);
+        });
+        card.addEventListener('touchend', function() { clearTimeout(holdTimer); });
+        card.addEventListener('touchmove', function() { clearTimeout(holdTimer); });
+        card.addEventListener('mousedown', function(e) {
+            holdTimer = setTimeout(() => {
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        createBubble(e.clientX, e.clientY);
+                    }, i * 150);
+                }
+            }, 500);
+        });
+        card.addEventListener('mouseup', function() { clearTimeout(holdTimer); });
+        card.addEventListener('mouseleave', function() { clearTimeout(holdTimer); });
+
+        function createBubble(x, y) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            const hearts = ['❤️', '💕', '💗', '💖', '🩷'];
+            bubble.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            bubble.style.left = (x - 15 + (Math.random() - 0.5) * 40) + 'px';
+            bubble.style.top = (y - 15 + (Math.random() - 0.5) * 40) + 'px';
+            bubble.style.fontSize = (20 + Math.random() * 20) + 'px';
+            document.body.appendChild(bubble);
+            setTimeout(() => { bubble.remove(); }, 2500);
+        }
+   // ----- 6. 摇一摇 -----
+        let lastShakeTime = 0;
+        let shakeCount = 0;
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', function(e) {
+                const acc = e.accelerationIncludingGravity;
+                const total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+                if (total > 25) {
+                    const now = Date.now();
+                    if (now - lastShakeTime > 1000) {
+                        lastShakeTime = now;
+                        shakeCount++;
+                        if (shakeCount >= 3) {
+                            shakeCount = 0;
+                            triggerShakeEffect();
+                        }
+                    }
+                }
+            }, { passive: true });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 's' || e.key === 'S') {
+                triggerShakeEffect();
+            }
+        });
+
+        function triggerShakeEffect() {
+            const hearts = ['❤️', '💕', '💗', '💖', '🩷'];
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const el = document.createElement('div');
+                    el.className = 'rain-heart';
+                    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    el.style.left = Math.random() * 100 + '%';
+                    el.style.top = '-30px';
+                    el.style.fontSize = (16 + Math.random() * 24) + 'px';
+                    el.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    document.body.appendChild(el);
+                    setTimeout(() => { el.remove(); }, 4000);
+                }, i * 80);
+            }
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(
+                        Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1,
+                        Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.1
+                    );
+                }, i * 300);
+            }
+        }
+
+        // ----- 7. 音乐控制 -----
+        let audio = null;
+        let isPlaying = false;
+        const musicBtn = document.getElementById('musicToggle');
+        musicBtn.addEventListener('click', function() {
+            if (!audio) {
+                audio = new Audio(SONG_URL);
+                audio.loop = true;
+                audio.onerror = function() {
+                    alert('音乐加载失败，请检查网络或音乐ID是否正确');
+                };
+            }
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.textContent = '🎵';
+                isPlaying = false;
+            } else {
+                audio.play().catch(() => {
+                    alert('自动播放被拦截啦，再点一次试试哦');
+                });
+                musicBtn.classList.add('playing');
+                musicBtn.textContent = '🎶';
+                isPlaying = true;
+            }
+        });
+
+        // ----- 8. 打卡 -----
+        function checkin(type) {
+            const todayStr = getTodayStr();
+            const key = type === 'water' ? 'water_checkin' : 'miss_checkin';
+            const stored = localStorage.getItem(key);
+            const btn = document.getElementById(type === 'water' ? 'waterBtn' : 'missBtn');
+
+            if (stored === todayStr) {
+                alert('今天已经打过卡啦，明天再来吧~');
+                return;
+            }
+            localStorage.setItem(key, todayStr);
+            btn.classList.add('done');
+            btn.textContent = type === 'water' ? '💧 已喝水 ✅' : '❤️ 已想我 ✅';
+            updateStatus();
+        }
+
+        function restoreCheckin() {
+            const todayStr = getTodayStr();
+            const waterStored = localStorage.getItem('water_checkin');
+            const missStored = localStorage.getItem('miss_checkin');
+            const waterBtn = document.getElementById('waterBtn');
+            const missBtn = document.getElementById('missBtn');
+            if (waterStored === todayStr) {
+                waterBtn.classList.add('done');
+                waterBtn.textContent = '💧 已喝水 ✅';
+            }
+            if (missStored === todayStr) {
+                missBtn.classList.add('done');
+                missBtn.textContent = '❤️ 已想我 ✅';
+            }
+        }
+
+        // ----- 9. 🫂 抱抱 + 💕 想你 计数器 -----
+        function addCount(type) {
+            const todayStr = getTodayStr();
+            const key = type === 'hug' ? 'hug_count' : 'miss_count';
+            const stored = localStorage.getItem(key);
+            let count = 0;
+            let storedDate = '';
+            if (stored) {
+                const parts = stored.split('|');
+                storedDate = parts[0];
+                if (storedDate === todayStr) {
+                    count = parseInt(parts[1]) || 0;
+                }
+            }
+            count++;
+            localStorage.setItem(key, todayStr + '|' + count);
+            updateCounters();
+            const rect = document.getElementById(type === 'hug' ? 'hugBtn' : 'missCountBtn').getBoundingClientRect();
+            createFirework(rect.left + rect.width/2, rect.top + rect.height/2);
+            updateStatus();
+        }
+
+        function updateCounters() {
+            const todayStr = getTodayStr();
+            const hugStored = localStorage.getItem('hug_count');
+            const missStored = localStorage.getItem('miss_count');
+            let hugCount = 0, missCount = 0;
+            if (hugStored) {
+                const parts = hugStored.split('|');
+                if (parts[0] === todayStr) hugCount = parseInt(parts[1]) || 0;
+            }
+            if (missStored) {
+                const parts = missStored.split('|');
+                if (parts[0] === todayStr) missCount = parseInt(parts[1]) || 0;
+            }
+            document.getElementById('hugCount').textContent = hugCount;
+            document.getElementById('missCount').textContent = missCount;
+        }
+
+        // ----- 10. 📊 今日恋爱状态 -----
+        function updateStatus() {
+            const todayStr = getTodayStr();
+            const hugStored = localStorage.getItem('hug_count');
+            const missStored = localStorage.getItem('miss_count');
+            const waterStored = localStorage.getItem('water_checkin');
+            const missCheckinStored = localStorage.getItem('miss_checkin');
+            let hugCount = 0, missCount = 0;
+            if (hugStored) {
+                const parts = hugStored.split('|');
+                if (parts[0] === todayStr) hugCount = parseInt(parts[1]) || 0;
+            }
+            if (missStored) {
+                const parts = missStored.split('|');
+                if (parts[0] === todayStr) missCount = parseInt(parts[1]) || 0;
+            }
+            const hasWater = waterStored === todayStr;
+            const hasMiss = missCheckinStored === todayStr;
+
+            let status = '';
+          if (hugCount === 0 && missCount === 0 && !hasWater && !hasMiss) {
+                status = '🌙 今天还没开始互动呢，快去抱抱她吧～';
+            } else {
+                let parts = [];
+                if (hugCount > 0) parts.push(`抱抱了 ${hugCount} 次 🫂`);
+                if (missCount > 0) parts.push(`想你了 ${missCount} 次 💕`);
+                if (hasWater) parts.push('喝了水 💧');
+                if (hasMiss) parts.push('想了我 ❤️');
+                const summary = parts.join('，');
+                if (hugCount >= 3 && missCount >= 3) {
+                    status = `✨ 今天超棒！${summary}，完美的一天！💖`;
+                } else if (hugCount >= 2 || missCount >= 2) {
+                    status = `💗 今天不错哦～ ${summary}，继续保持！`;
+                } else {
+                    status = `💕 ${summary}，今天也要甜甜的～`;
+                }
+            }
+            document.getElementById('statusBox').innerHTML = status;
+        }
+
+        // ----- 11. 🎯 每日小任务 -----
+        function getTodayTask() {
+            const todayStr = getTodayStr();
+            const stored = localStorage.getItem('task_today');
+            if (stored && stored.startsWith(todayStr)) {
+                return JSON.parse(stored.substring(10));
+            }
+            const seed = todayStr.split('/').join('');
+            const idx = parseInt(seed) % tasks.length;
+            const task = tasks[idx];
+            localStorage.setItem('task_today', todayStr + JSON.stringify({ text: task, done: false }));
+            return { text: task, done: false };
+        }
+
+        function loadTask() {
+            const taskData = getTodayTask();
+            document.getElementById('taskText').innerHTML = `🎯 ${taskData.text}`;
+            const btn = document.getElementById('taskBtn');
+            if (taskData.done) {
+                btn.classList.add('done');
+                btn.textContent = '已完成 ✅';
+            } else {
+                btn.classList.remove('done');
+                btn.textContent = '完成 ✅';
+            }
+        }
+
+        function completeTask() {
+            const todayStr = getTodayStr();
+            const stored = localStorage.getItem('task_today');
+            if (stored && stored.startsWith(todayStr)) {
+                const data = JSON.parse(stored.substring(10));
+                if (data.done) {
+                    alert('今天的任务已经完成啦，明天再来吧～');
+                    return;
+                }
+                data.done = true;
+                localStorage.setItem('task_today', todayStr + JSON.stringify(data));
+                const btn = document.getElementById('taskBtn');
+                btn.classList.add('done');
+                btn.textContent = '已完成 ✅';
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        createFirework(
+                            Math.random() * window.innerWidth * 0.6 + window.innerWidth * 0.2,
+                            Math.random() * window.innerHeight * 0.4 + window.innerHeight * 0.2
+                        );
+                    }, i * 200);
+                }
+                updateStatus();
+            }
+        }    // ----- 12. 🌤️ 天气（梧州） -----
+        async function fetchWeather() {
+            const box = document.getElementById('weatherBox');
+            try {
+                const url = `https://wttr.in/${encodeURIComponent(CITY)}?format=%C+%t&lang=zh`;
+                const response = await fetch(url);
+                const text = await response.text();
+                const match = text.match(/(.+?)\s*(\+?\d+°C)/);
+                if (match) {
+                    const condition = match[1].trim();
+                    const temp = match[2];
+                    const weatherMsgs = {
+                        '晴': '☀️ 晴天适合出去玩，但我更想见你',
+                        '多云': '⛅ 多云也挡不住我想你',
+                        '阴': '☁️ 阴天也要有好心情哦',
+                        '雨': '🌧️ 下雨了，记得带伞，别淋湿了我会心疼',
+                        '雪': '❄️ 下雪了，想和你一起看雪',
+                        '雾': '🌫️ 雾天注意安全，我的思念不会迷路'
+                    };
+                    let msg = '';
+                    for (const [key, value] of Object.entries(weatherMsgs)) {
+                        if (condition.includes(key)) {
+                            msg = value;
+                            break;
+                        }
+                    }
+                    if (!msg) msg = '🌤️ 无论什么天气，都想你';
+                    box.innerHTML = `
+                        <span>📍 ${CITY}</span>
+                        <span class="temp">${temp}</span>
+                        <span>${condition}</span>
+                        <span class="weather-msg">💬 ${msg}</span>
+                    `;
+                } else {
+                    box.innerHTML = `📍 ${CITY} 🌤️ 天气获取中...`;
+                }
+            } catch (e) {
+                box.innerHTML = `📍 ${CITY} 🌤️ 天气暂时获取不到，但想你不变 💕`;
+            }
+        }
+
+        // ----- 13. Canvas 特效（流星+烟花）-----
+        const canvas = document.getElementById('effectCanvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+
+        function resizeCanvas() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Meteor {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * W;
+                this.y = Math.random() * H * 0.3 - 20;
+                this.len = 60 + Math.random() * 80;
+                this.speed = 4 + Math.random() * 6;
+                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.2;
+                this.opacity = 0.8 + Math.random() * 0.2;
+                this.life = 0;
+                this.maxLife = 60 + Math.random() * 40;
+                this.active = true;
+            }
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                this.life++;
+                if (this.life > this.maxLife || this.x > W || this.y > H) {
+                    this.active = false;
+                }
+            }
+            draw() {
+                const grad = ctx.createLinearGradient(this.x, this.y, this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
+                grad.addColorStop(0, `rgba(255,255,255,${this.opacity})`);
+                grad.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x - this.len * Math.cos(this.angle), this.y - this.len * Math.sin(this.angle));
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color || `hsl(${Math.random()*360}, 80%, 60%)`;
+                const angle = Math.random() * 2 * Math.PI;
+                const speed = 2 + Math.random() * 6;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed - 1;
+                this.radius = 3 + Math.random() * 4;
+                this.life = 30 + Math.random() * 30;
+                this.maxLife = this.life;
+                this.active = true;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.06;
+                this.life--;
+                if (this.life <= 0 || this.x < 0 || this.x > W || this.y > H) {
+                    this.active = false;
+                }
+            }
+            draw() {
+                const alpha = this.life / this.maxLife;
+                ctx.globalAlpha = alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * alpha, 0, 2 * Math.PI);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        let meteors = [];
+        let particles = [];
+
+        function spawnMeteor() {
+            if (meteors.length < 3 && Math.random() < 0.02) {
+                meteors.push(new Meteor());
+            }
+        }
+
+        function createFirework(x, y) {
+            const count = 50 + Math.floor(Math.random() * 30);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        document.getElementById('mainCard').addEventListener('click', function(e) {
+            createFirework(e.clientX, e.clientY);
+        });
+
+        function animate() {
+            ctx.clearRect(0, 0, W, H);
+            spawnMeteor();
+            meteors.forEach(m => { m.update(); m.draw(); });
+            meteors = meteors.filter(m => m.active);
+            particles.forEach(p => { p.update(); p.draw(); });
+            particles = particles.filter(p => p.active);
+            requestAnimationFrame(animate);
+        }
+        animate();
+     // ----- 14. 初始化 -----
+        window.addEventListener('load', function() {
+            updateDays();
+            getNewMsg();
+            restoreCheckin();
+            updateCounters();
+            updateStatus();
+            loadTask();
+            fetchWeather();
+            setInterval(updateDays, 60000);
+            setTimeout(() => {
+                for (let i = 0; i < 6; i++) {
+                    setTimeout(() => {
+                        createFirework(
+                            Math.random() * W * 0.8 + W * 0.1,
+                            Math.random() * H * 0.3 + H * 0.1
+                        );
+                    }, i * 250);
+                }
+            }, 400);
+        });
+    </script>
+</body>
+</html>
