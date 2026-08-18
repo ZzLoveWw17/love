@@ -1,0 +1,29 @@
+name名称: Deploy to GitHub Pages部署到 GitHub Pages
+
+on:在:
+  push:推送:
+    branches: [ "main" ]  # 当推送到 main 分支时触发分支: [ "main" ]  # 当推送到 main 分支时触发
+
+# 赋予工作流部署权限
+permissions:权限权限:权限:
+  contents: read内容: 读取
+  pages: write页面: 写入页面: 写入页面: 写入
+  id-token: write身份令牌: 写入身份令牌: 写入
+
+# 只允许一个并发部署
+concurrency:并发:
+  group: "pages"分组: "页面"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:环境:
+      name: github-pages名称: GitHub Pages名称: github-pagesGitHub Pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest运行平台: ubuntu-latest运行平台: ubuntu-latest运行平台: ubuntu-latest
+    steps:步骤步骤：步骤:
+      - name: 拉取代码      - 名称: 拉取代码
+        uses: actions/checkout@v4使用: actions/checkout@v4
+      - name: 部署到 GitHub Pages      - 名称: 部署到 GitHub Pages
+        id: deploymentID: 部署ID: deployment部署
+        uses: actions/deploy-pages@v4使用: 用途: actions/deploy-pages@v4使用: 使用actions/deploy-pages@v4: actions/deploy-pages@v4
